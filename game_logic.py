@@ -28,10 +28,11 @@ def print_game_header():
     print("\nGuess the word before your snowman melts!\n")
 
 def get_valid_guess(guessed_letters):
-    """Validate the input until valid letter is entered.
-    Returns validated lower case letter."""
+    """Validate and return a single unused letter from user input.
+    Return validated lower case letter."""
     while True:
         guess = input("Guess a letter: ").lower()
+
         if len(guess) != 1:
             print("Please enter only one character.")
         elif not guess.isalpha():
@@ -39,7 +40,7 @@ def get_valid_guess(guessed_letters):
         elif guess in guessed_letters:
             print("You have already guessed this letter. Try again.")
         else:
-            return guess  # exit the loop with valid input
+            return guess
 
 
 def play_game():
@@ -62,17 +63,15 @@ def play_game():
             return
 
         guess = get_valid_guess(guessed_letters)
-
         guessed_letters.append(guess)
 
-        # Check guess
         if guess not in secret_word:
             mistakes += 1
             print("Incorrect! Snowman melts...")
         else:
             print("Correct!")
 
-    # the condition if player lost
+    # This executes if while loop completes normally (player lost)
     display_game_state(mistakes, secret_word, guessed_letters)
     print("Oh no! The snowman melted completely!")
     print(f"The word was: {secret_word}")
