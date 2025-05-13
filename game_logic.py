@@ -6,6 +6,7 @@ def get_random_word():
     """Selects a random word from the list."""
     return random.choice(WORDS)
 
+
 def display_game_state(mistakes, secret_word, guessed_letters):
     """Display the snowman stage for the current number of mistakes."""
     print(STAGES[mistakes])
@@ -19,6 +20,28 @@ def display_game_state(mistakes, secret_word, guessed_letters):
     print("Word: ", display_word, "\n")
 
 
+def print_game_header():
+    """Print the header at start of the game"""
+    print("⭐" * 30)
+    print(" WELCOME TO SNOWMAN MELTDOWN! ".center(30, "~"))
+    print("⭐" * 30)
+    print("\nGuess the word before your snowman melts!\n")
+
+def get_valid_guess(guessed_letters):
+    """Validate the input until valid letter is entered.
+    Returns validated lower case letter."""
+    while True:
+        guess = input("Guess a letter: ").lower()
+        if len(guess) != 1:
+            print("Please enter only one character.")
+        elif not guess.isalpha():
+            print("Please enter a letter (a-z).")
+        elif guess in guessed_letters:
+            print("You have already guessed this letter. Try again.")
+        else:
+            return guess  # exit the loop with valid input
+
+
 def play_game():
     """The main function using the gameplay loop"""
     secret_word = get_random_word()
@@ -26,28 +49,19 @@ def play_game():
     mistakes = 0
     max_mistakes = len(STAGES) - 1
 
-    print("Welcome to Snowman Meltdown!")
+    print_game_header()
 
     while mistakes < max_mistakes:
         display_game_state(mistakes, secret_word,guessed_letters)
 
         # Check if player has won
         if all(letter in guessed_letters for letter in secret_word):
-            print("Congratulations! You saved the snowman!")
-            print(f"The word was: {secret_word}")
+            print("\n🎉 CONGRATULATIONS! YOU SAVED THE SNOWMAN! 🎉")
+            print(f"The word was: {secret_word.upper()}")
+            print("⭐" * 30)
             return
 
-        # Input validation loop
-        while True:
-            guess = input("Guess a letter: ").lower()
-            if len(guess) != 1:
-                print("Please enter only one character.")
-            elif not guess.isalpha():
-                print("Please enter a letter (a-z).")
-            elif guess in guessed_letters:
-                print("You have already guessed this letter. Try again.")
-            else:
-                break # exit the loop with valid input
+        guess = get_valid_guess(guessed_letters)
 
         guessed_letters.append(guess)
 
