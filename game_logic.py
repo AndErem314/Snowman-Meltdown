@@ -37,7 +37,18 @@ def play_game():
             print(f"The word was: {secret_word}")
             return
 
-        guess = input("Guess a letter: ").lower()
+        # Input validation loop
+        while True:
+            guess = input("Guess a letter: ").lower()
+            if len(guess) != 1:
+                print("Please enter only one character.")
+            elif not guess.isalpha():
+                print("Please enter a letter (a-z).")
+            elif guess in guessed_letters:
+                print("You have already guessed this letter. Try again.")
+            else:
+                break # exit the loop with valid input
+
         guessed_letters.append(guess)
 
         # Check guess
